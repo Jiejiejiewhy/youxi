@@ -6,6 +6,9 @@ import { useCallback, useEffect, useState } from "react";
 import { getGameById } from "../data";
 import TetrisGame from "./TetrisGame";
 import MinesweeperGame from "./MinesweeperGame";
+import SudokuGame from "./SudokuGame";
+import WhackAMole from "./WhackAMole";
+import MemoryGame from "./MemoryGame";
 
 // ---------- 贪吃蛇 ----------
 const SNAKE_GRID = 20;
@@ -373,6 +376,9 @@ export default function GamePage() {
   if (id === "2048") return <Game2048Inner />;
   if (id === "tetris") return <TetrisGame />;
   if (id === "minesweeper") return <MinesweeperGame />;
+  if (id === "sudoku") return <SudokuGame />;
+  if (id === "whack-a-mole") return <WhackAMole />;
+  if (id === "memory") return <MemoryGame />;
 
   const game = getGameById(id);
   return <GamePlaceholderInner gameId={id} title={game?.title} />;
