@@ -13,6 +13,7 @@ export default function SpaceShooterGame() {
   const [enemies, setEnemies] = useState<{ x: number; y: number }[]>([]);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [playing, setPlaying] = useState(true);
   const tickRef = useRef(0);
 
   const reset = useCallback(() => {
@@ -21,6 +22,7 @@ export default function SpaceShooterGame() {
     setEnemies([]);
     setScore(0);
     setGameOver(false);
+    setPlaying(true);
     tickRef.current = 0;
   }, []);
 
