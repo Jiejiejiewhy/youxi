@@ -155,13 +155,16 @@ export default function TetrisGame() {
     setBoard(cleared);
     if (lines > 0) {
       setScore((s) => s + LINE_SCORE[lines] * level);
-      setLevel((l) => Math.min(20, l + Math.floor(lines / 2)));
-      setFallMs((ms) => Math.max(MIN_FALL_MS, INITIAL_FALL_MS - (level - 1) * 35));
+      setLevel((l) => {
+        const newLevel = Math.min(20, l + Math.floor(lines / 2));
+        setFallMs(Math.max(MIN_FALL_MS, INITIAL_FALL_MS - (newLevel - 1) * 35));
+        return newLevel;
+      });
     }
     const nextPiece = spawn(cleared);
     setPiece(nextPiece);
     if (nextPiece === null) setGameOver(true);
-  }, [piece, board, spawn]);
+  }, [piece, board, spawn, level]);
 
   const move = useCallback(
     (dr: number, dc: number) => {

@@ -42,22 +42,22 @@ export default function WhackAMole() {
   // 地鼠随机出现/消失
   useEffect(() => {
     if (!playing || gameOver) return;
-    const show = () => {
+    let active = true;
+    const cycle = () => {
+      if (!active) return;
       const idx = Math.floor(Math.random() * ROWS * COLS);
       setMoleIndex(idx);
+      const t1 = setTimeout(() => {
+        if (!active) return;
+        setMoleIndex(null);
+        const t2 = setTimeout(cycle, MOLE_HIDE_MS);
+      }, MOLE_SHOW_MS);
     };
-    const hide = () => setMoleIndex(null);
-    const cycle = () => {
-      show();
-      const t1 = setTimeout(hide, MOLE_SHOW_MS);
-      const t2 = setTimeout(cycle, MOLE_SHOW_MS + MOLE_HIDE_MS);
-      return () => {
-        clearTimeout(t1);
-        clearTimeout(t2);
-      };
+    const initialTimer = setTimeout(cycle, 400);
+    return () => {
+      active = false;
+      clearTimeout(initialTimer);
     };
-    const t = setTimeout(cycle, 400);
-    return () => clearTimeout(t);
   }, [playing, gameOver]);
 
   const whack = useCallback(

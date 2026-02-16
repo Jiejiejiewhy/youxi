@@ -43,6 +43,7 @@ export default function MemoryGame() {
   const handleClick = useCallback(
     (index: number) => {
       if (lock || isFlipped(index)) return;
+      const emoji = cards[index].emoji;
       const id = cards[index].id;
       if (flipped.length === 0) {
         setFlipped([index]);
@@ -50,12 +51,13 @@ export default function MemoryGame() {
       }
       if (flipped.length === 1) {
         const firstIndex = flipped[0];
+        const firstEmoji = cards[firstIndex].emoji;
         const firstId = cards[firstIndex].id;
         setFlipped([firstIndex, index]);
         setMoves((m) => m + 1);
         setLock(true);
-        if (firstId === id) {
-          setMatched((prev) => new Set(prev).add(id));
+        if (firstEmoji === emoji && firstId !== id) {
+          setMatched((prev) => new Set(prev).add(firstId).add(id));
           setFlipped([]);
           setLock(false);
         } else {

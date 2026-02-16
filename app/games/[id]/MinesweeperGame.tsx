@@ -153,13 +153,7 @@ export default function MinesweeperGame() {
     [gameOver, flagged, mines, counts, started, initOnFirstClick]
   );
 
-  useEffect(() => {
-    if (gameOver !== "win") return;
-    const total = ROWS * COLS - MINES;
-    let rev = 0;
-    for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) if (revealed[r][c]) rev++;
-    if (rev === total) setGameOver("win");
-  }, [revealed, gameOver]);
+
 
   const handleRightClick = useCallback(
     (e: React.MouseEvent, r: number, c: number) => {

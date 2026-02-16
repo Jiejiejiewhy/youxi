@@ -120,28 +120,30 @@ export default function Game2048() {
   const move = useCallback(
     (dir: Dir) => {
       if (gameOver) return;
-      let result: { grid: number[][]; changed: boolean; score: number };
-      switch (dir) {
-        case "left":
-          result = slideLeft(grid.map((r) => [...r]));
-          break;
-        case "right":
-          result = slideRight(grid.map((r) => [...r]));
-          break;
-        case "up":
-          result = slideUp(grid.map((r) => [...r]));
-          break;
-        case "down":
-          result = slideDown(grid.map((r) => [...r]));
-          break;
-      }
-      if (!result.changed) return;
-      setScore((s) => s + result.score);
-      addRandom(result.grid);
-      setGrid(result.grid);
-      if (!canMove(result.grid)) setGameOver(true);
+      setGrid((prevGrid) => {
+        let result: { grid: number[][]; changed: boolean; score: number };
+        switch (dir) {
+          case "left":
+            result = slideLeft(prevGrid.map((r) => [...r]));
+            break;
+          case "right":
+            result = slideRight(prevGrid.map((r) => [...r]));
+            break;
+          case "up":
+            result = slideUp(prevGrid.map((r) => [...r]));
+            break;
+          case "down":
+            result = slideDown(prevGrid.map((r) => [...r]));
+            break;
+        }
+        if (!result.changed) return prevGrid;
+        setScore((s) => s + result.score);
+        addRandom(result.grid);
+        if (!canMove(result.grid)) setGameOver(true);
+        return result.grid;
+      });
     },
-    [grid, gameOver]
+    [gameOver]
   );
 
   useEffect(() => {
